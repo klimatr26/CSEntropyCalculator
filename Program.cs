@@ -75,6 +75,11 @@ namespace CSEntropyCalculator
         {
             int* count = stackalloc int[256]; //Allocates a 256-byte array on the stack, for faster calculations; int[] count = new int[256]; would be safe
             //You can use Span<int> count = stackalloc int[256]; on .NET (Core), without using the unsafe keyword
+            //However, Span seems to be slower, even when used below (buffer)
+            for (int i = 0; i < 256; i++) //Initialize stackalloc array to 0, just in case
+            {
+                count[i] = 0;
+            }
             var fsize = file.Length;
             using (FileStream fs = new FileStream(file.FullName, FileMode.Open))
             {
